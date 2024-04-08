@@ -15,9 +15,13 @@ public class MessageController {
 
     @GetMapping("/messages")
     public String viewMessages(Model model) {
+        if (!model.containsAttribute("message")) {
+            model.addAttribute("message", new Message());
+        }
         model.addAttribute("messages", messageService.findAll());
         return "messages";
     }
+    
 
     @PostMapping("/send")
     public String sendMessage(Message message) {
