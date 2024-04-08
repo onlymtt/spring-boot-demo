@@ -1,13 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .register-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-<form th:action="@{/register}" th:object="${user}" method="post">
-    <input type="text" th:field="*{username}" placeholder="Username" />
-    <input type="password" th:field="*{password}" placeholder="Password" />
-    <button type="submit">Register</button>
-</form>
+    <div class="register-container">
+        <h2>Register</h2>
+        <form th:action="@{/register}" th:object="${user}" method="post">
+            <input type="text" th:field="*{username}" placeholder="Username" />
+            <input type="password" th:field="*{password}" placeholder="Password" />
+            <button type="submit">Register</button>
+        </form>
+    </div>
 </body>
 </html>

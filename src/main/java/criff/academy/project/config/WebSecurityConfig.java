@@ -24,8 +24,9 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/register", "POST"),
                                 new AntPathRequestMatcher("/css/**", "GET"))
                         .permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/messages", "GET")) // Aggiunta questa linea
-                        .hasAnyAuthority("User") // Assicurati che il ruolo esista
+                        .requestMatchers(new AntPathRequestMatcher("/messages", "GET"),
+                                new AntPathRequestMatcher("/messages", "POST")) // Aggiunta questa linea
+                        .hasAnyAuthority("ROLE_USER") // Assicurati che il ruolo esista
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
