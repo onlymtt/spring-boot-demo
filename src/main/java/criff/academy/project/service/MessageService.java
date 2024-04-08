@@ -5,10 +5,11 @@ import criff.academy.project.repository.MessageRepository;
 import criff.academy.project.repository.UserRepository;
 import criff.academy.project.model.*;
 
+import org.hibernate.type.descriptor.java.LocalDateTimeJavaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Service
 public class MessageService {
@@ -45,7 +46,7 @@ public class MessageService {
 
         // Imposta il timestamp corrente se non è già definito
         if (message.getTimestamp() == null) {
-            message.setTimestamp(new Date()); // Assicura che la classe Message utilizzi java.util.Date per il campo timestamp
+            message.setTimestamp(null); // Assicura che la classe Message utilizzi java.util.Date per il campo timestamp
         }
 
         return messageRepository.save(message);
