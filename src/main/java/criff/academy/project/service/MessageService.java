@@ -46,7 +46,7 @@ public class MessageService {
 
         // Imposta il timestamp corrente se non è già definito
         if (message.getTimestamp() == null) {
-            message.setTimestamp(null); // Assicura che la classe Message utilizzi java.util.Date per il campo timestamp
+            message.setTimestamp(LocalDateTime.now()); // Assicura che la classe Message utilizzi java.util.Date per il campo timestamp
         }
 
         return messageRepository.save(message);
