@@ -5,7 +5,6 @@ import criff.academy.project.repository.MessageRepository;
 import criff.academy.project.repository.UserRepository;
 import criff.academy.project.model.*;
 
-import org.hibernate.type.descriptor.java.LocalDateTimeJavaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;

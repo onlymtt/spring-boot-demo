@@ -9,8 +9,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
-import org.hibernate.type.descriptor.java.LocalDateTimeJavaType;
-
 @Entity
 @Table(name = "messages")
 public class Message {
