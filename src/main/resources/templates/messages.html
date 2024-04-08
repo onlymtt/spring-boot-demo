@@ -52,7 +52,7 @@
     <div class="container">
         <h2>Messages</h2>
         <div class="message-form">
-            <form th:action="@{/send}" th:object="${message}" method="post">
+            <form th:action="@{/messages/send}" th:object="${message}" method="post">
                 <input type="text" th:field="*{content}" placeholder="Write a message" />
                 <button type="submit">Send</button>
             </form>

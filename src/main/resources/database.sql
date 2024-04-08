@@ -7,7 +7,7 @@ CREATE TABLE users (
 CREATE TABLE messages (
     id SERIAL PRIMARY KEY,
     sender_id BIGINT NOT NULL,
-    receiver_id BIGINT NOT NULL,
+    receiver_id BIGINT,
     content TEXT NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (sender_id) REFERENCES users(id),

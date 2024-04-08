@@ -1,6 +1,7 @@
 package criff.academy.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +24,16 @@ public class MessageController {
     }
     
 
-    @PostMapping("/send")
-    public String sendMessage(Message message) {
-        messageService.save(message);
+    @PostMapping("/messages/send")
+    public String sendMessage(@ModelAttribute("message") Message message) {
+        // Ottieni l'username dell'utente autenticato
+        org.springframework.security.core.Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName(); // Ottieni l'username dell'utente autenticato
+
+        messageService.save(message, username); // Passa l'username al metodo save
         return "redirect:/messages";
     }
+    
+    
+
 }

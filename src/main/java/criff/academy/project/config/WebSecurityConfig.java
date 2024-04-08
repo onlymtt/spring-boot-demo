@@ -17,22 +17,23 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers(new AntPathRequestMatcher("/", "GET"),
-                                new AntPathRequestMatcher("/home", "GET"),
-                                new AntPathRequestMatcher("/register", "GET"),
-                                new AntPathRequestMatcher("/register", "POST"),
-                                new AntPathRequestMatcher("/css/**", "GET"))
-                        .permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/messages/**", "GET"),
-                                new AntPathRequestMatcher("/messages/**", "POST")) // Aggiunta questa linea
-                        .hasAnyAuthority("ROLE_USER") // Assicurati che il ruolo esista
-                        .anyRequest().authenticated())
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/messages", true) // Reindirizza a /messages dopo il login
-                        .permitAll())
-                .logout(logout -> logout.permitAll());
+        .authorizeRequests(authorizeRequests -> authorizeRequests
+                .requestMatchers(new AntPathRequestMatcher("/", "GET"),
+                        new AntPathRequestMatcher("/home", "GET"),
+                        new AntPathRequestMatcher("/register", "GET"),
+                        new AntPathRequestMatcher("/register", "POST"),
+                        new AntPathRequestMatcher("/css/**", "GET"))
+                .permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/messages/**", "GET"),
+                        new AntPathRequestMatcher("/messages/send", "POST")) // Assicurati che questo sia configurato correttamente
+                .hasAnyAuthority("ROLE_USER")
+                .anyRequest().authenticated())
+        .formLogin(formLogin -> formLogin
+                .loginPage("/login")
+                .defaultSuccessUrl("/messages", true)
+                .permitAll())
+        .logout(logout -> logout.permitAll());
+
         return http.build();
     }
 
