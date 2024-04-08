@@ -38,7 +38,7 @@ public class UserService {
     }
 
     private boolean emailExist(String email) {
-        Optional<User> user = userRepository.findByUsername(email);
+        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(email));
         return user.isPresent();
     }
 }
