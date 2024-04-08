@@ -30,7 +30,7 @@ public class MessageController {
         org.springframework.security.core.Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName(); // Ottieni l'username dell'utente autenticato
 
-        messageService.save(message, username); // Passa l'username al metodo save
+        messageService.save(message, username,null); // il secondo username attualmente è null per messaggi di broadcast
         return "redirect:/messages";
     }
     

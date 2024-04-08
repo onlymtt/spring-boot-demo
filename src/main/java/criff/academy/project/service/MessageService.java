@@ -8,6 +8,7 @@ import criff.academy.project.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Date;
 
 @Service
 public class MessageService {
@@ -22,7 +23,7 @@ public class MessageService {
     }
 
     // Metodo aggiornato per salvare un messaggio
-    public Message save(Message message, String senderUsername) {
+    public Message save(Message message, String senderUsername, String receiverUsername) {
         // Trova l'utente mittente basandosi sull'username
         User sender = userRepository.findByUsername(senderUsername);
         if (sender == null) {
@@ -30,9 +31,21 @@ public class MessageService {
         }
         message.setSender(sender);
 
-        // Se receiver_id è 0, impostalo a null per indicare un messaggio di broadcast
-        if (message.getReceiver() != null && message.getReceiver().getId() == 0) {
+        // Trova l'utente destinatario basandosi sull'username, se fornito
+        if (receiverUsername != null) {
+            User receiver = userRepository.findByUsername(receiverUsername);
+            if (receiver == null) {
+                throw new IllegalArgumentException("Utente destinatario non trovato.");
+            }
+            message.setReceiver(receiver);
+        } else {
+            // Se l'username del destinatario è "null", imposta il destinatario del messaggio a null
             message.setReceiver(null);
+        }
+
+        // Imposta il timestamp corrente se non è già definito
+        if (message.getTimestamp() == null) {
+            message.setTimestamp(new Date()); // Assicura che la classe Message utilizzi java.util.Date per il campo timestamp
         }
 
         return messageRepository.save(message);

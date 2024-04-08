@@ -24,7 +24,7 @@ public class WebSecurityConfig {
                         new AntPathRequestMatcher("/register", "POST"),
                         new AntPathRequestMatcher("/css/**", "GET"))
                 .permitAll()
-                .requestMatchers(new AntPathRequestMatcher("/messages/**", "GET"),
+                .requestMatchers(new AntPathRequestMatcher("/messages", "GET"),
                         new AntPathRequestMatcher("/messages/send", "POST")) // Assicurati che questo sia configurato correttamente
                 .hasAnyAuthority("ROLE_USER")
                 .anyRequest().authenticated())
