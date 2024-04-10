@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.Set;
 import java.time.LocalDateTime;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+
+
 @Service
 public class MessageService {
 
@@ -52,6 +56,15 @@ public class MessageService {
         }
 
         return messageRepository.save(message);
+    }
+
+    public Page<Message> findAllRelevantMessages(String currentUsername, Pageable pageable) {
+        User currentUser = userRepository.findByUsername(currentUsername);
+        if (currentUser == null) {
+            throw new IllegalArgumentException("Utente non trovato.");
+        }
+        Long currentUserId = currentUser.getId();
+        return messageRepository.findRelevantMessages(currentUserId, pageable);
     }
 
     public void addEmitter(SseEmitter emitter) {

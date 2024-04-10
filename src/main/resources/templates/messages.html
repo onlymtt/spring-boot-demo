@@ -19,8 +19,8 @@
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .message-form input[type="text"] {
-            width: calc(100% - 80px);
+        .message-form input[type="text"], .message-form select {
+            width: calc(100% - 20px);
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
@@ -28,7 +28,7 @@
             box-sizing: border-box;
         }
         .message-form button[type="submit"] {
-            width: 150px; /* aumenta la larghezza a 150px */
+            width: 100%;
             padding: 10px;
             margin-bottom: 10px;
             background-color: #4CAF50;
@@ -36,18 +36,6 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-        }
-        .message-form select {
-            width: calc(100% - 160px); /* riduci la larghezza per adattarla ai pulsanti più larghi */
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            appearance: none; /* rimuove lo stile predefinito */
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23555' d='M7.293 14.707a1 1 0 010-1.414L11.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
         }
         .message-container {
             margin-top: 20px;
@@ -67,7 +55,6 @@
             <form th:action="@{/messages/send}" method="post">
                 <input type="text" name="content" placeholder="Write a message" />
                 <button type="submit" name="sendPrivate" value="false">Send Broadcast</button>
-                
                 <select name="receiverUsername">
                     <option value="">Select a user</option>
                     <option th:each="user : ${users}" th:value="${user.username}" th:text="${user.username}"></option>
@@ -76,15 +63,24 @@
             </form>
         </div>
         <div class="message-container">
-            <div th:each="message : ${messages}" class="message">
-                <!-- Aggiornamento per mostrare timestamp, mittente e messaggio -->
+            <div th:each="message : ${messagePage.content}" class="message">
                 <p>
-                    <span th:if="${message.timestamp != null}" th:text="${#temporals.format(message.timestamp, 'dd-MM-yyyy HH:mm:ss')}"></span>
-                    [<span th:text="${message.sender.username}"></span>]
-                    <span th:if="${!message.isBroadcast}" th:text="'(private)'"></span>:
+                    <span th:text="${#temporals.format(message.timestamp, 'dd/MM/yyyy HH:mm')}"></span>
+                    <span th:text="${message.sender.username}"></span>
+                    <span th:if="${message.isBroadcast}" th:text="' -> tutti'"></span>
+                    <span th:if="${!message.isBroadcast}" th:text="' -> ' + ${message.receiver.username}"></span>:
                     <span th:text="${message.content}"></span>
                 </p>
             </div>
+        </div>
+        <!-- Paginazione e selezione dimensione pagina -->
+        <div>
+            <a th:if="${messagePage.hasPrevious()}" th:href="@{/messages(page=${messagePage.number - 1}, size=${messagePage.size})}">Precedente</a>
+            <a th:if="${messagePage.hasNext()}" th:href="@{/messages(page=${messagePage.number + 1}, size=${messagePage.size})}">Successivo</a>
+            | Visualizza: 
+            <a th:href="@{/messages(page=0, size=5)}">5</a>
+            <a th:href="@{/messages(page=0, size=10)}">10</a>
+            <a th:href="@{/messages(page=0, size=20)}">20</a> messaggi per pagina
         </div>
     </div>
 </body>
