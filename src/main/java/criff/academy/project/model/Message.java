@@ -26,6 +26,7 @@ public class Message {
 
     private String content;
     private LocalDateTime timestamp;
+    private boolean isBroadcast;
 
     // Getter e Setter
     public Long getId() {
@@ -66,5 +67,13 @@ public class Message {
 
     public void setTimestamp(LocalDateTime localDateTimeJavaType) {
         this.timestamp = localDateTimeJavaType;
+    }
+
+    public boolean isBroadcast() {
+        return isBroadcast;
+    }
+
+    public void setBroadcast(boolean isBroadcast) {
+        this.isBroadcast = isBroadcast;
     }
 }

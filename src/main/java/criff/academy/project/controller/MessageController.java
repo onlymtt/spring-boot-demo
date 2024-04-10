@@ -7,31 +7,34 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import criff.academy.project.service.MessageService;
 import criff.academy.project.model.Message;
+import criff.academy.project.repository.UserRepository;
 
 @Controller
 public class MessageController {
-
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/messages")
     public String viewMessages(Model model) {
         if (!model.containsAttribute("message")) {
             model.addAttribute("message", new Message());
         }
+        model.addAttribute("users", userRepository.findAll());
         model.addAttribute("messages", messageService.findAll());
         return "messages";
     }
-    
 
     @PostMapping("/messages/send")
-    public String sendMessage(@ModelAttribute("message") Message message) {
-        // Ottieni l'username dell'utente autenticato
+    public String sendMessage(@ModelAttribute("message") Message message, 
+                              @RequestParam(required = false) String receiverUsername, 
+                              @RequestParam(defaultValue = "false") boolean sendPrivate) {
         org.springframework.security.core.Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName(); // Ottieni l'username dell'utente autenticato
-
-        messageService.save(message, username,"broadcast"); // il secondo username attualmente è null per messaggi di broadcast
+        String username = authentication.getName();
+        boolean isBroadcast = !sendPrivate;
+        
+        messageService.save(message, username, isBroadcast, receiverUsername);
         return "redirect:/messages";
     }
-    
 }

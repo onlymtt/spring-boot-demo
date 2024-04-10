@@ -23,29 +23,26 @@ public class MessageService {
     }
 
     // Metodo aggiornato per salvare un messaggio
-    public Message save(Message message, String senderUsername, String receiverUsername) {
-        // Trova l'utente mittente basandosi sull'username
+    public Message save(Message message, String senderUsername, boolean isBroadcast, String receiverUsername) {
         User sender = userRepository.findByUsername(senderUsername);
         if (sender == null) {
             throw new IllegalArgumentException("Utente mittente non trovato.");
         }
         message.setSender(sender);
 
-        // Trova l'utente destinatario basandosi sull'username, se fornito
-        if (receiverUsername != null) {
+        if (!isBroadcast) {
             User receiver = userRepository.findByUsername(receiverUsername);
             if (receiver == null) {
                 throw new IllegalArgumentException("Utente destinatario non trovato.");
             }
             message.setReceiver(receiver);
         } else {
-            // Se l'username del destinatario è "null", imposta il destinatario del messaggio a null
-            message.setReceiver(null);
+            message.setReceiver(null); // Per i messaggi broadcast, il receiver è null
+            message.setBroadcast(true);
         }
 
-        // Imposta il timestamp corrente se non è già definito
         if (message.getTimestamp() == null) {
-            message.setTimestamp(LocalDateTime.now()); // Assicura che la classe Message utilizzi java.util.Date per il campo timestamp
+            message.setTimestamp(LocalDateTime.now());
         }
 
         return messageRepository.save(message);

@@ -9,6 +9,7 @@ CREATE TABLE messages (
     sender_id BIGINT NOT NULL,
     receiver_id BIGINT,
     content TEXT NOT NULL,
+    isBroadcast BIT ,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (sender_id) REFERENCES users(id),
     FOREIGN KEY (receiver_id) REFERENCES users(id)
