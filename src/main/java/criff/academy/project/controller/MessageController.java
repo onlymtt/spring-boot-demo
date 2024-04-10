@@ -5,6 +5,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
 import criff.academy.project.service.MessageService;
 import criff.academy.project.model.Message;
 import criff.academy.project.repository.UserRepository;
@@ -24,6 +26,18 @@ public class MessageController {
         model.addAttribute("users", userRepository.findAll());
         model.addAttribute("messages", messageService.findAll());
         return "messages";
+    }
+
+    @GetMapping("/messages/stream")
+    public SseEmitter streamMessages() {
+        SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
+
+        messageService.addEmitter(emitter);
+
+        emitter.onCompletion(() -> messageService.removeEmitter(emitter));
+        emitter.onTimeout(() -> messageService.removeEmitter(emitter));
+
+        return emitter;
     }
 
     @PostMapping("/messages/send")

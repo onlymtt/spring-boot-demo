@@ -28,7 +28,7 @@
             box-sizing: border-box;
         }
         .message-form button[type="submit"] {
-            width: 80px;
+            width: 150px; /* aumenta la larghezza a 150px */
             padding: 10px;
             margin-bottom: 10px;
             background-color: #4CAF50;
@@ -36,6 +36,18 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+        }
+        .message-form select {
+            width: calc(100% - 160px); /* riduci la larghezza per adattarla ai pulsanti più larghi */
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            appearance: none; /* rimuove lo stile predefinito */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23555' d='M7.293 14.707a1 1 0 010-1.414L11.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
         }
         .message-container {
             margin-top: 20px;
@@ -68,7 +80,8 @@
                 <!-- Aggiornamento per mostrare timestamp, mittente e messaggio -->
                 <p>
                     <span th:if="${message.timestamp != null}" th:text="${#temporals.format(message.timestamp, 'dd-MM-yyyy HH:mm:ss')}"></span>
-                    [<span th:text="${message.sender.username}"></span>]: 
+                    [<span th:text="${message.sender.username}"></span>]
+                    <span th:if="${!message.isBroadcast}" th:text="'(private)'"></span>:
                     <span th:text="${message.content}"></span>
                 </p>
             </div>

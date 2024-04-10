@@ -7,7 +7,12 @@ import criff.academy.project.model.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.time.LocalDateTime;
 
 @Service
@@ -15,6 +20,7 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
     private final UserRepository userRepository; // Assumo l'esistenza di UserRepository
+    private final Set<SseEmitter> emitters = Collections.synchronizedSet(new HashSet<>());
 
     @Autowired
     public MessageService(MessageRepository messageRepository, UserRepository userRepository) {
@@ -48,6 +54,13 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
+    public void addEmitter(SseEmitter emitter) {
+        emitters.add(emitter);
+    }
+
+    public void removeEmitter(SseEmitter emitter) {
+        emitters.remove(emitter);
+    }
     // Metodo per trovare tutti i messaggi tra due utenti
     public List<Message> findAllMessagesBetweenUsers(Long senderId, Long receiverId) {
         return messageRepository.findAllMessagesBetweenUsers(senderId, receiverId);
