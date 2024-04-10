@@ -27,6 +27,10 @@ public class UserService {
 
     public User save(User user) {
         logger.info("Tentativo di salvare l'utente: {}", user.getUsername());
+        if (user.getUsername()=="broadcast") {
+            logger.warn("l'utente non può chiamarsi broadcast");
+            throw new RuntimeException("l'utente non può chiamarsi broadcast");
+        }
         if (emailExist(user.getUsername())) {
             logger.warn("Utente già esistente: {}", user.getUsername());
             throw new RuntimeException("Esiste già un account con quel nome utente: " + user.getUsername());
