@@ -15,6 +15,9 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+- script: ls $(Build.SourcesDirectory)/target
+  displayName: 'Elenco dei file nella directory target'
+
 
 # Assicurati che i file .war siano generati e posizionati nella cartella di destinazione
 - task: CopyFiles@2
