@@ -16,16 +16,20 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
 
-# Copia i file .war generati nella cartella di destinazione
+# Assicurati che i file .war siano generati e posizionati nella cartella di destinazione
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '$(System.DefaultWorkingDirectory)/target' # Controlla questo percorso
+    SourceFolder: '$(Build.SourcesDirectory)/target' # Assicurati che questo percorso sia corretto
     Contents: '**/*.war' # Specifica che vogliamo copiare solo i file .war
     TargetFolder: '$(Build.ArtifactStagingDirectory)' # Copia i file nella cartella di staging dell'artifact
+
+# Aggiungi un passo per elencare i file, se necessario, per debugging
+- script: ls $(Build.ArtifactStagingDirectory)
+  displayName: 'Elenco dei file nella cartella di staging'
 
 # Pubblica l'artifact della build
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)' # Usa la cartella di staging dell'artifact come percorso da pubblicare
-    ArtifactName: 'drop' # Nome dell'artifact
+    ArtifactName: 'webapp' # Nome dell'artifact, cambiato per chiarezza
     publishLocation: 'Container' # Pubblica l'artifact nel contenitore di Azure DevOps
