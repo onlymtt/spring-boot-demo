@@ -40,4 +40,9 @@ public class UserController {
     public String showLoginForm() {
         return "login";
     }
+
+    @GetMapping("/logout")
+    public String showLogOut() {
+        return "login";
+    }
 }

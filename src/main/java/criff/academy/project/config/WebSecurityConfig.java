@@ -32,7 +32,10 @@ public class WebSecurityConfig {
                 .loginPage("/login")
                 .defaultSuccessUrl("/messages", true)
                 .permitAll())
-        .logout(logout -> logout.permitAll());
+                .logout(logout -> logout
+                .logoutUrl("/logout") // specifica l'URL per il logout
+                .logoutSuccessUrl("/login?logout") // specifica l'URL a cui reindirizzare dopo il logout
+                .permitAll());
 
         return http.build();
     }

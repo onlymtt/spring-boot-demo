@@ -60,6 +60,10 @@
                     <option th:each="user : ${users}" th:value="${user.username}" th:text="${user.username}"></option>
                 </select>
                 <button type="submit" name="sendPrivate" value="true">Send Private</button>
+                
+            </form>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Logout</button>
             </form>
         </div>
         <div class="message-container">
